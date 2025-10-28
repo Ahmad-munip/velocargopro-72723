@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* VelocargoPro Design System - Teal and grey palette */
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 24% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 24% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 24% 12%;
+
+    /* Teal primary palette */
+    --primary: 187 54% 54%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 187 54% 64%;
+    --primary-dark: 187 54% 44%;
+
+    /* Grey secondary palette */
+    --secondary: 220 9% 46%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 220 9% 58%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
+
+    --accent: 187 54% 54%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 187 54% 54%;
+
+    --radius: 0.75rem;
+
+    /* Custom gradient definitions */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(var(--primary-light)) 0%, hsl(var(--secondary-light)) 100%);
+
+    /* Shadows with brand colors */
+    --shadow-glow: 0 10px 40px -10px hsl(var(--primary) / 0.4);
+    --shadow-elevation: 0 4px 20px -4px hsl(var(--primary) / 0.25);
+
+    /* Animation timings */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  }
+
+  .dark {
+    --background: 222 24% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 24% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 24% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 187 54% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 187 54% 68%;
+    --primary-dark: 187 54% 48%;
+
+    --secondary: 220 9% 51%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 220 9% 63%;
+
+    --muted: 220 14% 17%;
+    --muted-foreground: 220 8% 65%;
+
+    --accent: 187 54% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 17%;
+    --input: 220 13% 17%;
+    --ring: 187 54% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  #lovable-badge {
+    display: none !important;
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-elevation {
+    box-shadow: var(--shadow-elevation);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-pulse-button {
+    animation: pulse-button 2s ease-in-out infinite;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes pulse-button {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: var(--shadow-glow);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 15px 50px -10px hsl(var(--primary) / 0.6);
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: var(--shadow-glow);
+    }
+    50% {
+      box-shadow: 0 15px 60px -10px hsl(var(--primary) / 0.8), 
+                  0 0 0 3px hsl(var(--primary) / 0.3);
+    }
+  }
+
+  /* Formes animées en arrière-plan */
+  .bg-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float-around 20s infinite linear;
+  }
+
+  .floating-shape:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    background: hsl(var(--primary));
+    top: 20%;
+    left: 10%;
+    animation-duration: 25s;
+    animation-delay: 0s;
+  }
+
+  .floating-shape:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    background: hsl(var(--secondary));
+    top: 70%;
+    left: 80%;
+    animation-duration: 30s;
+    animation-delay: -5s;
+  }
+
+  .floating-shape:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    background: hsl(var(--primary-light));
+    top: 40%;
+    left: 70%;
+    animation-duration: 20s;
+    animation-delay: -10s;
+  }
+
+  .floating-shape:nth-child(4) {
+    width: 100px;
+    height: 100px;
+    background: hsl(var(--accent));
+    top: 10%;
+    left: 60%;
+    animation-duration: 35s;
+    animation-delay: -15s;
+  }
+
+  .floating-shape:nth-child(5) {
+    width: 40px;
+    height: 40px;
+    background: hsl(var(--secondary-light));
+    top: 80%;
+    left: 20%;
+    animation-duration: 18s;
+    animation-delay: -8s;
+  }
+
+  .floating-shape:nth-child(6) {
+    width: 90px;
+    height: 90px;
+    background: hsl(var(--primary-dark));
+    top: 60%;
+    left: 40%;
+    animation-duration: 28s;
+    animation-delay: -12s;
+  }
+
+  @keyframes float-around {
+    0% {
+      transform: translateY(0px) translateX(0px) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-30px) translateX(20px) rotate(90deg);
+    }
+    50% {
+      transform: translateY(-60px) translateX(-15px) rotate(180deg);
+    }
+    75% {
+      transform: translateY(-30px) translateX(-25px) rotate(270deg);
+    }
+    100% {
+      transform: translateY(0px) translateX(0px) rotate(360deg);
+    }
+  }
+}
