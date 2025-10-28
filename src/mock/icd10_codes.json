@@ -1,0 +1,22 @@
+[
+  { "code": "A00", "title": "Kolera" },
+  { "code": "A09", "title": "Diare dan gastroenteritis" },
+  { "code": "B00", "title": "Infeksi virus herpes" },
+  { "code": "E11", "title": "Diabetes mellitus tipe 2" },
+  { "code": "I10", "title": "Hipertensi esensial (primer)" },
+  { "code": "I25", "title": "Penyakit jantung iskemik kronis" },
+  { "code": "J00", "title": "Nasofaringitis akut (common cold)" },
+  { "code": "J06.9", "title": "Infeksi saluran pernapasan akut atas, tidak spesifik" },
+  { "code": "J18", "title": "Pneumonia" },
+  { "code": "J45", "title": "Asma" },
+  { "code": "K29", "title": "Gastritis dan duodenitis" },
+  { "code": "K30", "title": "Dispepsia" },
+  { "code": "M19", "title": "Osteoartritis" },
+  { "code": "M79", "title": "Gangguan jaringan lunak lainnya" },
+  { "code": "N30", "title": "Sistitis" },
+  { "code": "N39", "title": "Gangguan saluran kemih lainnya" },
+  { "code": "O00", "title": "Kehamilan ektopik" },
+  { "code": "Z34.0", "title": "Pengawasan kehamilan normal" },
+  { "code": "Z00", "title": "Pemeriksaan umum dan investigasi" },
+  { "code": "R50", "title": "Demam" }
+]

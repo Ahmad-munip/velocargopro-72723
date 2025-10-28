@@ -1,0 +1,47 @@
+[
+  {
+    "id": "p001",
+    "nik": "3201012001950001",
+    "no_bpjs": "0001234567890",
+    "nama": "Ahmad Suryadi",
+    "tgl_lahir": "1995-01-20",
+    "jk": "L",
+    "alamat": "Jl. Merdeka No. 10, Jakarta Pusat",
+    "phone": "081234567890",
+    "status_bpjs": "AKTIF",
+    "status_bpjs_ts": "2024-01-15T10:00:00+07:00",
+    "id_fhir_patient": "fhir-p001",
+    "created_at": "2024-01-01T08:00:00+07:00",
+    "updated_at": "2024-01-15T10:00:00+07:00"
+  },
+  {
+    "id": "p002",
+    "nik": "3201012002900002",
+    "no_bpjs": "0001234567891",
+    "nama": "Siti Nurhaliza",
+    "tgl_lahir": "1990-02-15",
+    "jk": "P",
+    "alamat": "Jl. Sudirman No. 25, Jakarta Selatan",
+    "phone": "081234567891",
+    "status_bpjs": "AKTIF",
+    "status_bpjs_ts": "2024-01-10T09:30:00+07:00",
+    "id_fhir_patient": "fhir-p002",
+    "created_at": "2024-01-02T08:00:00+07:00",
+    "updated_at": "2024-01-10T09:30:00+07:00"
+  },
+  {
+    "id": "p003",
+    "nik": "3201012003850003",
+    "no_bpjs": null,
+    "nama": "Budi Santoso",
+    "tgl_lahir": "1985-03-10",
+    "jk": "L",
+    "alamat": "Jl. Gatot Subroto No. 5, Jakarta Barat",
+    "phone": "081234567892",
+    "status_bpjs": "TIDAK_AKTIF",
+    "status_bpjs_ts": null,
+    "id_fhir_patient": "fhir-p003",
+    "created_at": "2024-01-03T08:00:00+07:00",
+    "updated_at": "2024-01-03T08:00:00+07:00"
+  }
+]

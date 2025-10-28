@@ -1,0 +1,44 @@
+[
+  {
+    "id": "e001",
+    "patient_id": "p001",
+    "tanggal": "2024-01-15T10:30:00+07:00",
+    "poli": "Umum",
+    "keluhan": "Demam dan batuk sejak 3 hari",
+    "anamnesis": "Pasien mengeluh demam tinggi disertai batuk berdahak. Tidak ada sesak napas.",
+    "assessment": "ISPA (Infeksi Saluran Pernapasan Atas)",
+    "plan": "Antipiretik, Antitusif, Edukasi istirahat cukup",
+    "sep_no": "SEP-001-2024",
+    "id_fhir_encounter": "fhir-e001",
+    "created_at": "2024-01-15T10:30:00+07:00",
+    "updated_at": "2024-01-15T11:00:00+07:00"
+  },
+  {
+    "id": "e002",
+    "patient_id": "p002",
+    "tanggal": "2024-01-16T09:00:00+07:00",
+    "poli": "KIA",
+    "keluhan": "Pemeriksaan kehamilan rutin",
+    "anamnesis": "Kehamilan 24 minggu, tidak ada keluhan khusus",
+    "assessment": "Kehamilan normal trimester 2",
+    "plan": "Vitamin prenatal, kontrol 1 bulan",
+    "sep_no": "SEP-002-2024",
+    "id_fhir_encounter": "fhir-e002",
+    "created_at": "2024-01-16T09:00:00+07:00",
+    "updated_at": "2024-01-16T09:30:00+07:00"
+  },
+  {
+    "id": "e003",
+    "patient_id": "p003",
+    "tanggal": "2024-01-17T14:00:00+07:00",
+    "poli": "Umum",
+    "keluhan": "Sakit kepala dan pusing",
+    "anamnesis": "Sakit kepala sejak pagi, tekanan darah tinggi",
+    "assessment": "Hipertensi grade 1",
+    "plan": "Antihipertensi, diet rendah garam, kontrol 2 minggu",
+    "sep_no": null,
+    "id_fhir_encounter": "fhir-e003",
+    "created_at": "2024-01-17T14:00:00+07:00",
+    "updated_at": "2024-01-17T14:30:00+07:00"
+  }
+]

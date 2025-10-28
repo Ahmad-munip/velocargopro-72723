@@ -1,0 +1,27 @@
+{
+  "response": {
+    "status": "success",
+    "data": [
+      {
+        "no_bpjs": "0001234567890",
+        "nama": "Ahmad Suryadi",
+        "status": "AKTIF",
+        "jenis_peserta": "PBI",
+        "kelas_rawat": "III",
+        "tgl_tmt": "2020-01-01",
+        "tgl_tat": "2099-12-31",
+        "faskes_tk1": "Puskesmas Merdeka"
+      },
+      {
+        "no_bpjs": "0001234567891",
+        "nama": "Siti Nurhaliza",
+        "status": "AKTIF",
+        "jenis_peserta": "PPU",
+        "kelas_rawat": "II",
+        "tgl_tmt": "2019-06-15",
+        "tgl_tat": "2099-12-31",
+        "faskes_tk1": "Puskesmas Merdeka"
+      }
+    ]
+  }
+}

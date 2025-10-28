@@ -1,73 +1,141 @@
-# Welcome to your Lovable project
+# SIMPUS Digital Puskesmas
 
-## Project info
+Sistem Informasi Manajemen Puskesmas berbasis web menggunakan React + Vite + TypeScript + Tailwind CSS + shadcn-ui.
 
-**URL**: https://lovable.dev/projects/26c15113-786c-4594-b714-f8c5ae4c44b7
+## Mode Operasi
 
-## How can I edit this code?
+Aplikasi saat ini berjalan dalam **Offline Mode** menggunakan mock data lokal (JSON). Tidak ada koneksi database yang aktif.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS + shadcn-ui
+- **Routing**: React Router v6
+- **State Management**: React Context API
+- **Data**: Mock JSON files (offline mode)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/26c15113-786c-4594-b714-f8c5ae4c44b7) and start prompting.
+## Struktur Folder
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── pages/              # Halaman utama aplikasi
+│   ├── Login.tsx       # Halaman login dummy
+│   ├── Dashboard.tsx   # Dashboard dengan statistik
+│   ├── Pasien.tsx      # Data pasien
+│   ├── Encounter.tsx   # Riwayat kunjungan
+│   ├── Laboratorium.tsx # Data lab
+│   ├── Rujukan.tsx     # Rujukan (coming soon)
+│   └── Laporan.tsx     # Laporan & statistik
+├── components/         # Komponen UI
+│   ├── layout/         # Layout components
+│   └── ui/             # shadcn-ui components
+├── contexts/           # React contexts
+│   └── AuthContext.tsx # Autentikasi dummy
+├── lib/                # Utilities & helpers
+│   ├── date-formatter.ts  # Format tanggal (Asia/Jakarta)
+│   ├── mock-api.ts        # Mock API client
+│   └── report-aggregator.ts # Agregasi laporan
+└── mock/               # Mock data JSON
+    ├── patients.json
+    ├── encounters.json
+    ├── diagnoses.json
+    ├── lab_orders.json
+    ├── lab_results.json
+    ├── icd10_codes.json
+    ├── audit_logs.json
+    ├── bpjs/
+    │   └── validation.json
+    └── fhir/
+        ├── patient.json
+        └── encounter.json
 ```
 
-**Edit a file directly in GitHub**
+## Instalasi & Menjalankan Aplikasi
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Node.js 18+ atau Bun
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Install Dependencies
 
-## What technologies are used for this project?
+```bash
+npm install
+# atau
+bun install
+```
 
-This project is built with:
+### Development Mode
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+npm run dev
+# atau
+bun dev
+```
 
-## How can I deploy this project?
+Aplikasi akan berjalan di `http://localhost:8080`
 
-Simply open [Lovable](https://lovable.dev/projects/26c15113-786c-4594-b714-f8c5ae4c44b7) and click on Share -> Publish.
+### Build Production
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+npm run build
+# atau
+bun build
+```
 
-Yes, you can!
+## Login Dummy
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Aplikasi menggunakan autentikasi dummy untuk offline mode. Gunakan email dan password apa saja, lalu pilih role:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- **ADMIN**: Akses ke Dashboard, Pasien, Laporan
+- **DOKTER**: Akses ke Dashboard, Pasien, Encounter, Laboratorium, Rujukan
+- **LAB**: Akses ke Dashboard, Laboratorium
+
+Contoh login:
+- Email: `admin@puskesmas.id`
+- Password: `password` (atau password apa saja)
+- Role: `ADMIN`
+
+## Fitur Utama
+
+### ✅ Sudah Tersedia
+
+- Login dummy dengan role-based access
+- Dashboard dengan statistik dan chart
+- Data pasien dengan pencarian
+- Riwayat encounter/kunjungan
+- Data laboratorium & hasil pemeriksaan
+- Laporan dan statistik
+- Timezone Asia/Jakarta untuk semua tanggal
+- Offline mode badge di header
+
+### 🚧 Coming Soon
+
+- Rujukan ke fasilitas kesehatan lain
+- Form entry data baru
+- Export laporan ke PDF/Excel
+- Integrasi database PostgreSQL
+
+## Environment Variables
+
+File `.env.example` berisi template untuk koneksi database di masa depan:
+
+```env
+VITE_DATABASE_URL=
+VITE_DB_HOST=
+VITE_DB_PORT=
+VITE_DB_NAME=
+VITE_DB_USER=
+VITE_DB_PASSWORD=
+VITE_APP_TZ=Asia/Jakarta
+```
+
+**Catatan**: Variabel ini belum aktif karena aplikasi berjalan dalam offline mode.
+
+## Timezone
+
+Semua timestamp menggunakan timezone **Asia/Jakarta (WIB, UTC+7)**.
+
+## License
+
+MIT License

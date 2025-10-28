@@ -1,0 +1,39 @@
+[
+  {
+    "id": "al001",
+    "user_id": "u001",
+    "action": "CREATE",
+    "entity": "encounter",
+    "entity_id": "e001",
+    "meta_json": {
+      "patient_name": "Ahmad Suryadi",
+      "poli": "Umum"
+    },
+    "created_at": "2024-01-15T10:30:00+07:00"
+  },
+  {
+    "id": "al002",
+    "user_id": "u002",
+    "action": "UPDATE",
+    "entity": "patient",
+    "entity_id": "p001",
+    "meta_json": {
+      "field": "status_bpjs",
+      "old_value": "PENDING",
+      "new_value": "AKTIF"
+    },
+    "created_at": "2024-01-15T10:00:00+07:00"
+  },
+  {
+    "id": "al003",
+    "user_id": "u003",
+    "action": "CREATE",
+    "entity": "lab_result",
+    "entity_id": "lr001",
+    "meta_json": {
+      "test": "LEUKOSIT",
+      "patient": "Ahmad Suryadi"
+    },
+    "created_at": "2024-01-15T15:00:00+07:00"
+  }
+]

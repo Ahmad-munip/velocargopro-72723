@@ -1,0 +1,35 @@
+[
+  {
+    "id": "lr001",
+    "lab_order_id": "lo001",
+    "test_code": "LEUKOSIT",
+    "nilai": 12500,
+    "unit": "/uL",
+    "rujukan_min": 4000,
+    "rujukan_max": 11000,
+    "interpretasi": "TINGGI",
+    "created_at": "2024-01-15T15:00:00+07:00"
+  },
+  {
+    "id": "lr002",
+    "lab_order_id": "lo001",
+    "test_code": "HEMOGLOBIN",
+    "nilai": 14.2,
+    "unit": "g/dL",
+    "rujukan_min": 12.0,
+    "rujukan_max": 16.0,
+    "interpretasi": "NORMAL",
+    "created_at": "2024-01-15T15:00:00+07:00"
+  },
+  {
+    "id": "lr003",
+    "lab_order_id": "lo002",
+    "test_code": "KOLESTEROL_TOTAL",
+    "nilai": 245,
+    "unit": "mg/dL",
+    "rujukan_min": 0,
+    "rujukan_max": 200,
+    "interpretasi": "TINGGI",
+    "created_at": "2024-01-17T16:00:00+07:00"
+  }
+]

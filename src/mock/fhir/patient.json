@@ -1,0 +1,38 @@
+{
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "fhir-p001",
+        "identifier": [
+          {
+            "system": "nik",
+            "value": "3201012001950001"
+          }
+        ],
+        "name": [
+          {
+            "text": "Ahmad Suryadi",
+            "family": "Suryadi",
+            "given": ["Ahmad"]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1995-01-20",
+        "address": [
+          {
+            "text": "Jl. Merdeka No. 10, Jakarta Pusat"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "081234567890"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "d001",
+    "encounter_id": "e001",
+    "icd10_code": "J06.9",
+    "description": "Infeksi saluran pernapasan akut atas, tidak spesifik",
+    "type": "PRINCIPAL",
+    "created_at": "2024-01-15T10:45:00+07:00"
+  },
+  {
+    "id": "d002",
+    "encounter_id": "e002",
+    "icd10_code": "Z34.0",
+    "description": "Pengawasan kehamilan normal, first trimester",
+    "type": "PRINCIPAL",
+    "created_at": "2024-01-16T09:15:00+07:00"
+  },
+  {
+    "id": "d003",
+    "encounter_id": "e003",
+    "icd10_code": "I10",
+    "description": "Hipertensi esensial (primer)",
+    "type": "PRINCIPAL",
+    "created_at": "2024-01-17T14:15:00+07:00"
+  }
+]
