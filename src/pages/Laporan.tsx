@@ -1,120 +1,220 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getDashboardStats, getTopDiagnoses, getEncountersByPoli } from '@/lib/report-aggregator';
-import { BarChart3, FileText, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { getReportData, getEncountersByPoli } from '@/lib/report-aggregator';
+import { exportToPDF, exportToExcel } from '@/lib/report-exporter';
+import { useAuth } from '@/contexts/AuthContext';
+import { mockApi } from '@/lib/mock-api';
+import { toast } from '@/hooks/use-toast';
+import { formatDate } from '@/lib/date-formatter';
+import { FileDown, FileSpreadsheet, Search } from 'lucide-react';
+import type { ReportRow } from '@/lib/report-aggregator';
 
 const Laporan = () => {
-  const stats = getDashboardStats();
-  const topDiagnoses = getTopDiagnoses(10);
-  const encountersByPoli = getEncountersByPoli();
+  const { user } = useAuth();
+  const [startDate, setStartDate] = useState('2024-01-01');
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedPoli, setSelectedPoli] = useState<string>('');
+  const [reportData, setReportData] = useState<ReportRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const poliList = getEncountersByPoli();
+
+  const handleSearch = () => {
+    setLoading(true);
+    const data = getReportData(startDate, endDate, selectedPoli || undefined);
+    setReportData(data);
+    setLoading(false);
+    
+    toast({ 
+      title: 'Berhasil', 
+      description: `Ditemukan ${data.length} data kunjungan` 
+    });
+  };
+
+  const handleExportPDF = async () => {
+    if (reportData.length === 0) {
+      toast({ 
+        title: 'Error', 
+        description: 'Tidak ada data untuk diekspor', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+
+    exportToPDF(reportData, {
+      startDate,
+      endDate,
+      poli: selectedPoli || undefined,
+      userName: user?.name || 'Unknown',
+    });
+
+    await mockApi.createAuditLog({
+      user_id: user?.id,
+      action: 'EXPORT',
+      entity: 'report',
+      entity_id: 'pdf',
+      meta_json: {
+        format: 'PDF',
+        records: reportData.length,
+        date_range: `${startDate} - ${endDate}`,
+        poli: selectedPoli || 'Semua',
+      },
+    });
+
+    toast({ title: 'Berhasil', description: 'Laporan PDF berhasil diunduh' });
+  };
+
+  const handleExportExcel = async () => {
+    if (reportData.length === 0) {
+      toast({ 
+        title: 'Error', 
+        description: 'Tidak ada data untuk diekspor', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+
+    exportToExcel(reportData, {
+      startDate,
+      endDate,
+      poli: selectedPoli || undefined,
+      userName: user?.name || 'Unknown',
+    });
+
+    await mockApi.createAuditLog({
+      user_id: user?.id,
+      action: 'EXPORT',
+      entity: 'report',
+      entity_id: 'excel',
+      meta_json: {
+        format: 'Excel',
+        records: reportData.length,
+        date_range: `${startDate} - ${endDate}`,
+        poli: selectedPoli || 'Semua',
+      },
+    });
+
+    toast({ title: 'Berhasil', description: 'Laporan Excel berhasil diunduh' });
+  };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Laporan</h1>
-        <p className="text-muted-foreground">Laporan dan statistik Puskesmas</p>
+        <h1 className="text-3xl font-bold">Laporan Kunjungan</h1>
+        <p className="text-muted-foreground">Generate dan export laporan kunjungan pasien</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Encounter</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {encountersByPoli.reduce((acc, curr) => acc + curr.count, 0)}
+      {/* Filter Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Filter Laporan</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-4">
+            <div>
+              <Label htmlFor="startDate">Tanggal Mulai</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
-            <p className="text-xs text-muted-foreground">Semua kunjungan</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Pasien</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalPatients}</div>
-            <p className="text-xs text-muted-foreground">Pasien terdaftar</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cakupan BPJS</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {Math.round((stats.bpjsActiveCount / stats.totalPatients) * 100)}%
+            <div>
+              <Label htmlFor="endDate">Tanggal Akhir</Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </div>
-            <p className="text-xs text-muted-foreground">
-              {stats.bpjsActiveCount} dari {stats.totalPatients} pasien
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+            <div>
+              <Label htmlFor="poli">Poli (Opsional)</Label>
+              <Select value={selectedPoli} onValueChange={setSelectedPoli}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Semua Poli" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Semua Poli</SelectItem>
+                  {poliList.map((poli) => (
+                    <SelectItem key={poli.poli} value={poli.poli}>
+                      {poli.poli}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-end">
+              <Button onClick={handleSearch} className="w-full">
+                <Search className="h-4 w-4 mr-2" />
+                Cari
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {/* Distribution by Poli */}
+      {/* Results Card */}
+      {reportData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Distribusi Kunjungan per Poli</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Hasil Laporan ({reportData.length} data)</CardTitle>
+              <div className="flex gap-2">
+                <Button onClick={handleExportPDF} variant="outline" size="sm">
+                  <FileDown className="h-4 w-4 mr-2" />
+                  Export PDF
+                </Button>
+                <Button onClick={handleExportExcel} variant="outline" size="sm">
+                  <FileSpreadsheet className="h-4 w-4 mr-2" />
+                  Export Excel
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {encountersByPoli.map((item) => {
-                const total = encountersByPoli.reduce((acc, curr) => acc + curr.count, 0);
-                const percentage = Math.round((item.count / total) * 100);
-                
-                return (
-                  <div key={item.poli} className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">{item.poli}</span>
-                      <span className="text-muted-foreground">
-                        {item.count} ({percentage}%)
-                      </span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary transition-all"
-                        style={{ width: `${percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="border rounded-lg overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>No</TableHead>
+                    <TableHead>Tanggal</TableHead>
+                    <TableHead>Nama Pasien</TableHead>
+                    <TableHead>Poli</TableHead>
+                    <TableHead>Diagnosa Utama</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {reportData.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{formatDate(row.tanggal, 'short')}</TableCell>
+                      <TableCell>{row.nama_pasien}</TableCell>
+                      <TableCell>{row.poli}</TableCell>
+                      <TableCell>{row.diagnosa_utama}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
         </Card>
+      )}
 
-        {/* Top 10 Diagnoses */}
+      {/* Empty State */}
+      {reportData.length === 0 && !loading && (
         <Card>
-          <CardHeader>
-            <CardTitle>Top 10 Diagnosis</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {topDiagnoses.map((item, index) => (
-                <div key={item.code} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary flex-shrink-0">
-                    {index + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium">{item.code}</div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {item.description}
-                    </div>
-                  </div>
-                  <span className="text-sm font-medium text-muted-foreground flex-shrink-0">
-                    {item.count}x
-                  </span>
-                </div>
-              ))}
-            </div>
+          <CardContent className="py-12 text-center text-muted-foreground">
+            Pilih filter dan klik "Cari" untuk menampilkan laporan
           </CardContent>
         </Card>
-      </div>
+      )}
     </div>
   );
 };

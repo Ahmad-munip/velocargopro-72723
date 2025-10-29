@@ -88,11 +88,58 @@ export const getTopDiagnoses = (limit: number = 10): TopDiagnosis[] => {
 };
 
 /**
+ * Get daily encounter count (today)
+ */
+export const getDailyEncounters = (): number => {
+  const today = new Date().toISOString().split('T')[0];
+  return encountersData.filter(e => e.tanggal.startsWith(today)).length;
+};
+
+/**
+ * Get monthly encounter count (current month)
+ */
+export const getMonthlyEncounters = (): number => {
+  const now = new Date();
+  const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return encountersData.filter(e => e.tanggal.startsWith(yearMonth)).length;
+};
+
+/**
  * Get encounter statistics by date range
  */
-export const getEncountersByDateRange = (startDate: string, endDate: string) => {
+export const getEncountersByDateRange = (startDate: string, endDate: string, poli?: string) => {
   return encountersData.filter(e => {
     const encounterDate = e.tanggal.split('T')[0];
-    return encounterDate >= startDate && encounterDate <= endDate;
+    const dateMatch = encounterDate >= startDate && encounterDate <= endDate;
+    const poliMatch = !poli || e.poli === poli;
+    return dateMatch && poliMatch;
+  });
+};
+
+/**
+ * Get report data for export
+ */
+export interface ReportRow {
+  tanggal: string;
+  nama_pasien: string;
+  poli: string;
+  diagnosa_utama: string;
+}
+
+export const getReportData = (startDate: string, endDate: string, poli?: string): ReportRow[] => {
+  const encounters = getEncountersByDateRange(startDate, endDate, poli);
+  
+  return encounters.map(encounter => {
+    const patient = patientsData.find(p => p.id === encounter.patient_id);
+    const diagnosis = diagnosesData.find(
+      d => d.encounter_id === encounter.id && d.type === 'PRINCIPAL'
+    );
+    
+    return {
+      tanggal: encounter.tanggal,
+      nama_pasien: patient?.nama || 'Unknown',
+      poli: encounter.poli,
+      diagnosa_utama: diagnosis?.description || '-',
+    };
   });
 };
