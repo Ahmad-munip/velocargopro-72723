@@ -14,16 +14,371 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_logs: {
+        Row: {
+          action: string
+          entity: string
+          entity_id: string | null
+          id: string
+          meta_json: Json | null
+          timestamp: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          entity: string
+          entity_id?: string | null
+          id?: string
+          meta_json?: Json | null
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          meta_json?: Json | null
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      diagnoses: {
+        Row: {
+          created_at: string | null
+          encounter_id: string
+          id: string
+          jenis: Database["public"]["Enums"]["diagnosis_type"]
+          kode_icd10: string
+          nama_diagnosis: string
+        }
+        Insert: {
+          created_at?: string | null
+          encounter_id: string
+          id?: string
+          jenis: Database["public"]["Enums"]["diagnosis_type"]
+          kode_icd10: string
+          nama_diagnosis: string
+        }
+        Update: {
+          created_at?: string | null
+          encounter_id?: string
+          id?: string
+          jenis?: Database["public"]["Enums"]["diagnosis_type"]
+          kode_icd10?: string
+          nama_diagnosis?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diagnoses_encounter_id_fkey"
+            columns: ["encounter_id"]
+            isOneToOne: false
+            referencedRelation: "encounters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      encounters: {
+        Row: {
+          anamnesis: string | null
+          assessment: string | null
+          created_at: string | null
+          id: string
+          id_fhir_encounter: string | null
+          keluhan: string | null
+          no_sep: string | null
+          patient_id: string
+          pemeriksaan: string | null
+          plan: string | null
+          poli: string
+          status: Database["public"]["Enums"]["encounter_status"] | null
+          tanggal: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          anamnesis?: string | null
+          assessment?: string | null
+          created_at?: string | null
+          id?: string
+          id_fhir_encounter?: string | null
+          keluhan?: string | null
+          no_sep?: string | null
+          patient_id: string
+          pemeriksaan?: string | null
+          plan?: string | null
+          poli: string
+          status?: Database["public"]["Enums"]["encounter_status"] | null
+          tanggal?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          anamnesis?: string | null
+          assessment?: string | null
+          created_at?: string | null
+          id?: string
+          id_fhir_encounter?: string | null
+          keluhan?: string | null
+          no_sep?: string | null
+          patient_id?: string
+          pemeriksaan?: string | null
+          plan?: string | null
+          poli?: string
+          status?: Database["public"]["Enums"]["encounter_status"] | null
+          tanggal?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "encounters_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      icd10_codes: {
+        Row: {
+          kategori: string | null
+          kode: string
+          nama: string
+        }
+        Insert: {
+          kategori?: string | null
+          kode: string
+          nama: string
+        }
+        Update: {
+          kategori?: string | null
+          kode?: string
+          nama?: string
+        }
+        Relationships: []
+      }
+      lab_orders: {
+        Row: {
+          catatan: string | null
+          created_at: string | null
+          encounter_id: string
+          id: string
+          jenis_pemeriksaan: string
+          status: Database["public"]["Enums"]["lab_order_status"] | null
+        }
+        Insert: {
+          catatan?: string | null
+          created_at?: string | null
+          encounter_id: string
+          id?: string
+          jenis_pemeriksaan: string
+          status?: Database["public"]["Enums"]["lab_order_status"] | null
+        }
+        Update: {
+          catatan?: string | null
+          created_at?: string | null
+          encounter_id?: string
+          id?: string
+          jenis_pemeriksaan?: string
+          status?: Database["public"]["Enums"]["lab_order_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_orders_encounter_id_fkey"
+            columns: ["encounter_id"]
+            isOneToOne: false
+            referencedRelation: "encounters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lab_results: {
+        Row: {
+          created_at: string | null
+          id: string
+          interpretasi: string | null
+          lab_order_id: string
+          nilai: string | null
+          nilai_rujukan: string | null
+          parameter: string
+          satuan: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          interpretasi?: string | null
+          lab_order_id: string
+          nilai?: string | null
+          nilai_rujukan?: string | null
+          parameter: string
+          satuan?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          interpretasi?: string | null
+          lab_order_id?: string
+          nilai?: string | null
+          nilai_rujukan?: string | null
+          parameter?: string
+          satuan?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_results_lab_order_id_fkey"
+            columns: ["lab_order_id"]
+            isOneToOne: false
+            referencedRelation: "lab_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          alamat: string | null
+          created_at: string | null
+          id: string
+          id_fhir_patient: string | null
+          jenis_kelamin: string
+          nama: string
+          nik: string
+          no_bpjs: string | null
+          status: Database["public"]["Enums"]["patient_status"] | null
+          status_bpjs: string | null
+          tanggal_lahir: string
+          telepon: string | null
+          updated_at: string | null
+          waktu_validasi_bpjs: string | null
+        }
+        Insert: {
+          alamat?: string | null
+          created_at?: string | null
+          id?: string
+          id_fhir_patient?: string | null
+          jenis_kelamin: string
+          nama: string
+          nik: string
+          no_bpjs?: string | null
+          status?: Database["public"]["Enums"]["patient_status"] | null
+          status_bpjs?: string | null
+          tanggal_lahir: string
+          telepon?: string | null
+          updated_at?: string | null
+          waktu_validasi_bpjs?: string | null
+        }
+        Update: {
+          alamat?: string | null
+          created_at?: string | null
+          id?: string
+          id_fhir_patient?: string | null
+          jenis_kelamin?: string
+          nama?: string
+          nik?: string
+          no_bpjs?: string | null
+          status?: Database["public"]["Enums"]["patient_status"] | null
+          status_bpjs?: string | null
+          tanggal_lahir?: string
+          telepon?: string | null
+          updated_at?: string | null
+          waktu_validasi_bpjs?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id: string
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      sync_jobs: {
+        Row: {
+          created_at: string | null
+          entity: string
+          entity_id: string | null
+          error: string | null
+          id: string
+          payload: Json | null
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          entity: string
+          entity_id?: string | null
+          error?: string | null
+          id?: string
+          payload?: Json | null
+          status: string
+        }
+        Update: {
+          created_at?: string | null
+          entity?: string
+          entity_id?: string | null
+          error?: string | null
+          id?: string
+          payload?: Json | null
+          status?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["user_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      diagnosis_type: "PRINCIPAL" | "SECONDARY" | "COMPLICATION"
+      encounter_status:
+        | "PLANNED"
+        | "ARRIVED"
+        | "IN_PROGRESS"
+        | "FINISHED"
+        | "CANCELLED"
+      lab_order_status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED"
+      patient_status: "ACTIVE" | "INACTIVE"
+      user_role: "ADMIN" | "DOKTER" | "LAB" | "PERAWAT"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +505,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      diagnosis_type: ["PRINCIPAL", "SECONDARY", "COMPLICATION"],
+      encounter_status: [
+        "PLANNED",
+        "ARRIVED",
+        "IN_PROGRESS",
+        "FINISHED",
+        "CANCELLED",
+      ],
+      lab_order_status: ["PENDING", "IN_PROGRESS", "COMPLETED", "CANCELLED"],
+      patient_status: ["ACTIVE", "INACTIVE"],
+      user_role: ["ADMIN", "DOKTER", "LAB", "PERAWAT"],
+    },
   },
 } as const
