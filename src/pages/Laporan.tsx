@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { getReportData, getEncountersByPoli } from '@/lib/report-aggregator';
+import { getReportData, getPoliList } from '@/lib/report-api';
 import { exportToPDF, exportToExcel } from '@/lib/report-exporter';
 import { useAuth } from '@/contexts/AuthContext';
-import { mockApi } from '@/lib/mock-api';
+import { createAuditLog } from '@/lib/api-client';
 import { toast } from '@/hooks/use-toast';
 import { formatDate } from '@/lib/date-formatter';
 import { FileDown, FileSpreadsheet, Search } from 'lucide-react';
-import type { ReportRow } from '@/lib/report-aggregator';
+import type { ReportRow } from '@/lib/report-api';
 
 const Laporan = () => {
   const { user } = useAuth();
@@ -20,19 +20,39 @@ const Laporan = () => {
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedPoli, setSelectedPoli] = useState<string>('');
   const [reportData, setReportData] = useState<ReportRow[]>([]);
+  const [poliList, setPoliList] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const poliList = getEncountersByPoli();
+  useEffect(() => {
+    const fetchPoliList = async () => {
+      const { data } = await getPoliList();
+      if (data) {
+        setPoliList(data);
+      }
+    };
+    fetchPoliList();
+  }, []);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setLoading(true);
-    const data = getReportData(startDate, endDate, selectedPoli || undefined);
-    setReportData(data);
+    const { data, error } = await getReportData(startDate, endDate, selectedPoli || undefined);
+    
+    if (error) {
+      toast({ 
+        title: 'Error', 
+        description: 'Gagal mengambil data laporan', 
+        variant: 'destructive' 
+      });
+      setLoading(false);
+      return;
+    }
+
+    setReportData(data || []);
     setLoading(false);
     
     toast({ 
       title: 'Berhasil', 
-      description: `Ditemukan ${data.length} data kunjungan` 
+      description: `Ditemukan ${data?.length || 0} data kunjungan` 
     });
   };
 
@@ -50,10 +70,10 @@ const Laporan = () => {
       startDate,
       endDate,
       poli: selectedPoli || undefined,
-      userName: user?.name || 'Unknown',
+      userName: user?.email || 'Unknown',
     });
 
-    await mockApi.createAuditLog({
+    await createAuditLog({
       user_id: user?.id,
       action: 'EXPORT',
       entity: 'report',
@@ -83,10 +103,10 @@ const Laporan = () => {
       startDate,
       endDate,
       poli: selectedPoli || undefined,
-      userName: user?.name || 'Unknown',
+      userName: user?.email || 'Unknown',
     });
 
-    await mockApi.createAuditLog({
+    await createAuditLog({
       user_id: user?.id,
       action: 'EXPORT',
       entity: 'report',
@@ -143,8 +163,8 @@ const Laporan = () => {
                 <SelectContent>
                   <SelectItem value="">Semua Poli</SelectItem>
                   {poliList.map((poli) => (
-                    <SelectItem key={poli.poli} value={poli.poli}>
-                      {poli.poli}
+                    <SelectItem key={poli} value={poli}>
+                      {poli}
                     </SelectItem>
                   ))}
                 </SelectContent>
